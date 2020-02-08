@@ -1,0 +1,102 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	<title>RollingJS</title>
+	<style>
+		* {
+			margin: 0px;
+			padding: 0px;
+			border: 0px;
+		}
+		.header {
+			width: 800px;
+			height: 80px;
+			text-align: center;
+			background-color: #eeeeee;
+		}
+		.folder {
+			width: 109px;
+			height: 50px;
+			margin: 10px;
+			border-radius: 10px;
+			float: left;
+			border: 2px solid #000000;
+		}
+		.folder.worksheet {
+			background-color: lightgreen;
+		}
+		.folder.screenshots {
+			background-color: lightblue;
+		}
+		.clear {
+			clear: both;
+		}
+		.text {
+			font-size: 14px;
+			line-height: 25px;
+			font-family: "Arial";
+			color: #999999;
+		}
+		p.text:hover {
+			color: #000000;
+			cursor: pointer;
+			font-weight: bolder;
+		}
+		.window,iframe {
+			background-color: #eeeeee;
+			width: 800px;
+			height: 650px;
+		}
+	</style>
+</head>
+<body>
+	<div class="header">
+		<div class="folder worksheet" id="button0" value="https://drive.google.com/file/d/1uqEWqvehRq8PRLpzw8G4JXgVwhh8MYhY/preview">
+			<p class="text">Peer Review Worksheet 1</p>
+		</div>
+
+		<div class="folder screenshots" id="button1" value="artifact-3-1.html">
+			<p class="text">Peer Review Screenshots 1</p>
+		</div>
+
+		<div class="folder worksheet" id="button2" value="https://drive.google.com/file/d/1eod2JdnOiO0MkJAZADy_E67Zk3P6fxwN/preview">
+			<p class="text">Peer Review Worksheet 2</p>
+		</div>
+
+		<div class="folder screenshots" id="button3" value="artifact-3-2.html">
+			<p class="text">Peer Review Screenshots 2</p>
+		</div>
+
+		<div class="folder worksheet" id="button4" value="https://drive.google.com/file/d/1hjSoHU-JWX5OKAGy0_NH4o1DAc955Rbi/preview">
+			<p class="text">Peer Review Worksheet 3</p>
+		</div>
+
+		<div class="folder screenshots" id="button5" value="artifact-3-3.html">
+			<p class="text">Peer Review Screenshots 3</p>
+		</div>
+
+		<div class="clear"><!--clear float--></div>
+	</div>
+	<div class="window">
+		<iframe scrolling="no" src="https://drive.google.com/file/d/1uqEWqvehRq8PRLpzw8G4JXgVwhh8MYhY/preview" id="iframe">
+		</iframe>
+	</div>
+
+
+	<script>
+		var curr = -1;
+		var iframe = document.getElementById("iframe");
+
+		var buttons = document.getElementsByClassName("folder");
+		for (var i = 0; i < buttons.length; i++) {
+			buttons[i].onclick = function() {
+				console.log(this.id);
+				curr = parseInt(this.id.substring(6), 10);
+				toggle();
+			}
+		}
+
+		function toggle() {
+			iframe.setAttribute("src", buttons[curr].getAttribute("value"));
+		}
+	</script>
+
+</body></html>

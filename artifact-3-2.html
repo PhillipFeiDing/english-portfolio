@@ -1,0 +1,223 @@
+<html><head>
+	<meta charset="utf-8">
+	<title>综合实例</title>
+	<style>
+		* {
+	margin: 0;
+	padding: 0;
+}
+
+ul {
+	list-style: none;
+}
+
+body {
+	font-family: "微软雅黑";
+	color: #14191e;
+}
+
+.main {
+	width: 480px;
+	height: 600px;
+	margin: 30px auto;
+	overflow: hidden;
+	position: relative;
+}
+
+.banner {
+	width: 480px;
+	height: 600px;
+	overflow: hidden;
+	position: relative;
+}
+.banner-slide {
+	width: 480px;
+	height: 600px;
+	background-repeat: no-repeat;
+	position: absolute;
+	display: none;
+}
+.slide1 {
+	background-image: url("resource/b1.png");
+	background-size: 480px 600px;
+}
+.slide2 {
+	background-image: url("resource/b2.png");
+	background-size: 480px 600px;
+}
+.slide3 {
+	background-image: url("resource/b3.png");
+	background-size: 480px 600px;
+}
+.slide4 {
+	background-image: url("resource/b4.png");
+	background-size: 480px 600px;
+}
+.slide5 {
+	background-image: url("resource/b5.png");
+	background-size: 480px 600px;
+}
+.slide6 {
+	background-image: url("resource/b6.png");
+	background-size: 480px 600px;
+}
+.slide-active {
+	display: block;
+}
+
+.button {
+	position: absolute;
+	width: 40px;
+	height: 80px;
+	left: 0px;
+	top: 50%;
+	margin-top: -40px;
+	background: url("resource/arrow-2.png") no-repeat center center;
+}
+.button:hover {
+	background-color: #333;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+}
+
+.prev {
+	transform: rotate(180deg);
+}
+.next {
+	left: auto;
+	right: 0px;
+}
+
+.dots {
+	position: absolute;
+	right: 20px;
+	bottom: 8px;
+	text-align: right;
+}
+
+.dots span {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	line-height: 12px;
+	border-radius: 50%;
+	background: rgba(7,17,27,0.4);
+	box-shadow: 0 0 0 2px rgba(255,255,255,0.8) inset;
+	margin-left: 8px;
+	cursor: pointer;
+}
+
+.dots span.active {
+	box-shadow: 0 0 0 2px rgba(7,17,27,0.4) inset;
+	background: #fff;
+}
+
+	</style>
+</head>
+<body>
+	 <div class="main" id="main">
+	 	<!--图片轮播 -->
+	 	<div class="banner" id="banner">
+	 		<a href="#" class="banner-slide slide1">
+	 			<div class="banner-slide slide1 slide-active"></div>
+	 		</a>
+	 		<a href="#" class="banner-slide slide2">
+	 			<div class="banner-slide slide2"></div>
+	 		</a>
+	 		<a href="#" class="banner-slide slide3">
+	 			<div class="banner-slide slide3"></div>
+	 		</a>
+	 		<a href="#" class="banner-slide slide4">
+	 			<div class="banner-slide slide4"></div>
+	 		</a>
+	 		<a href="#" class="banner-slide slide5">
+	 			<div class="banner-slide slide5"></div>
+	 		</a>
+	 		<a href="#" class="banner-slide slide6 slide-active">
+	 			<div class="banner-slide slide6"></div>
+	 		</a>
+	 	</div>
+	 	<!--上一张下一张按钮-->
+	 	<a href="javascript:void(0)" class="button prev" id="prev"></a>
+	 	<a href="javascript:void(0)" class="button next" id="next"></a>
+	 	<!--圆点导航-->
+	 	<div class="dots" id="dots">
+	 		<span class="active" id="dot0"></span>
+	 		<span id="dot1" class="inactive"></span>
+	 		<span id="dot2" class="inactive"></span>
+	 		<span id="dot3" class="inactive"></span>
+	 		<span id="dot4" class="inactive"></span>
+	 		<span id="dot5" class="inactive"></span>
+	 	</div>
+	 </div>
+
+	 <script type="text/javascript">
+	 	// 封装一个代替getElementById()的方法
+function byId(id) {
+	return typeof(id) === "string" ? document.getElementById(id):id;
+}
+
+//全局变量　
+var index = 0;
+var timer = null;
+var dots = byId("dots").getElementsByTagName("span");
+var pics = byId("banner").getElementsByTagName("a");
+var len = pics.length;
+//console.log("Total: " + len);
+
+function slideImg() {
+	var main = byId("main");
+	// //划过清除定时器，离开继续　
+	// main.onmouseover = function() {
+	// 	if (timer) {
+	// 		clearInterval(timer);
+	// 	}
+	// }
+	// main.onmouseout = function() {
+	// 	timer = setInterval(function() {
+	// 		index = (index + 1) % dots.length;
+	// 		//console.log(index);
+	// 		toggle();
+	// 	}, 3000);
+	// }
+	// main.onmouseout();
+
+	// 点击圆点切换
+	for (var i = 0; i < len; i++) {
+		dots[i].id = "dot" + i;
+		dots[i].onclick = function() {
+			index = parseInt(this.id.substring(3), 10);
+			toggle();
+		}
+	}
+
+	//点击按钮切换
+	var prevButton = byId("prev");
+	prevButton.onclick = function() {
+		index = (index - 1 + len) % len;
+		toggle();
+	}
+	var nextButton = byId("next");
+	nextButton.onclick = function() {
+		index = (index + 1) % len;
+		toggle();
+	}
+}
+
+//切换图片和小圆点
+function toggle() {
+	for (var curr = 0; curr < len; curr++) {
+		if (curr == index) {
+			dots[curr].setAttribute("class", "active");
+			pics[curr].setAttribute("class", "banner-slide slide" + (curr + 1) + " slide-active");
+		} else {
+			dots[curr].setAttribute("class", "inactive");
+			pics[curr].setAttribute("class", "banner-slide slide" + (curr + 1));
+		}
+	}
+}
+
+slideImg();
+	 </script>
+
+</body></html>

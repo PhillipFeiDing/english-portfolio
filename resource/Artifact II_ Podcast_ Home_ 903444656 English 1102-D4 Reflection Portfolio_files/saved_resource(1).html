@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)https://phillipfeiding.github.io/ENGLportfolioPodcast/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>rollingPics</title>
+	<style>
+		* {
+			border: 0px;
+			margin: 0px;
+			padding: 0px;
+		}
+		.window{
+			width: 800px;
+			height: 350px;
+			overflow: hidden;
+			position: relative;
+		}
+		.image{
+			width: 200px;
+			height: 350px;
+			position: relative;
+			left: 0;
+		}
+		.imgWrapper{
+			position: absolute;
+			width: 200px;
+			height: 350px;
+			left: 0;
+			overflow: hidden;
+		}
+		.clear {
+			clear: both;
+		}
+	</style>
+</head>
+<body>
+	<div class="window">
+		<div class="imgWrapper" style="left: 297px;"><img src="./IMG_9575.PNG" class="image" id="img0" style="width: 200px; height: 350px; left: 0px; top: 0px;"></div>
+		<div class="imgWrapper" style="left: 497px;"><img src="./IMG_9576.PNG" class="image" id="img1"></div>
+		<div class="imgWrapper" style="left: 697px;"><img src="./IMG_9577.PNG" class="image" id="img2"></div>
+		<div class="imgWrapper" style="left: 897px;"><img src="./IMG_9578.PNG" class="image" id="img3"></div>
+		<div class="imgWrapper" style="left: 1097px;"><img src="./IMG_9579.PNG" class="image" id="img4"></div>
+		<div class="imgWrapper" style="left: -103px;"><img src="./IMG_9580.PNG" class="image" id="img5"></div>
+		<div class="imgWrapper" style="left: 97px;"><img src="./IMG_9581.PNG" class="image" id="img6"></div>
+	</div>
+	<div class="clear"></div>
+
+	<script type="text/javascript">
+		var container = document.getElementsByClassName("window")[0];
+		var images = document.getElementsByClassName("imgWrapper");
+		var width = styleOf(images[0]).width;
+		width = parseInt(width.substring(0, width.indexOf("px")), 10);
+		var timer = null;
+		var currImg = 0;
+		var _width = getWidth(0);
+		var _height = getHeight(0);
+
+		for (var i = 0; i < images.length; i++) {
+			images[i].style.left = i * width + "px";
+		}
+
+		container.onmouseout = function() { 
+			timer = setInterval(roll, 10);
+		}
+		container.onmouseover = function() {
+			clearInterval(timer);
+		}
+		container.onmouseout();
+
+		for (var i = 0; i < images.length; i++) {
+			images[i].getElementsByTagName("img")[0].onmouseover = function() {
+				currImg = parseInt(this.id.substring(3), 10);
+				// console.log(currImg);
+				zoom(currImg);
+			}
+			images[i].getElementsByTagName("img")[0].onmouseout = function() {
+				reset(currImg);
+			}
+		}
+
+		function roll() {
+			for (var i = 0; i < images.length; i++) {
+				var left = images[i].style.left;
+				var newLeft = parseInt(left.substring(0, left.indexOf("px")), 10);
+				newLeft -= 1;
+				if (newLeft < (-1) * width) {
+					newLeft += images.length * width;
+				}
+				images[i].style.left = newLeft + "px";
+			}
+		}
+
+		function getWidth(curr) {
+			var image = images[curr].getElementsByTagName("img")[0];
+			var width = styleOf(image).width;
+			width = parseInt(width.substring(0, width.indexOf("px")), 10);
+			return width;
+		}
+
+		function getHeight(curr) {
+			var image = images[curr].getElementsByTagName("img")[0];
+			var height = styleOf(image).height;
+			height = parseInt(height.substring(0, height.indexOf("px")), 10);
+			return height;
+		}
+
+		function reset(curr) {
+			var image = images[curr].getElementsByTagName("img")[0];
+			image.style.width = _width + "px";
+			image.style.height = _height + "px";
+			image.style.left = "0px";
+			image.style.top = "0px";
+		}
+
+		function zoom(curr) {
+			var image = images[curr].getElementsByTagName("img")[0];
+			image.style.width = Math.round(_width * 1.2) + "px";
+			image.style.height = Math.round(_height * 1.2) + "px";
+			image.style.left = (-1) * Math.round(_width * 0.1) + "px";
+			image.style.top = (-1) * Math.round(_height * 0.1) + "px";
+		}
+
+		function styleOf(elem) {
+			return getComputedStyle(elem);
+		}
+	</script>
+
+
+</body></html>
